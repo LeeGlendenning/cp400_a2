@@ -1,5 +1,7 @@
 package cp400_a2;
 
+import java.io.IOException;
+
 
 public class Main {
     
@@ -7,8 +9,14 @@ public class Main {
     
     public static void main(String[] args) {
         
-        KMeans km = new KMeans(IRIS_DATA_PATH, 4);
-        km.cluster();
+        KMeans km;
+        try {
+            km = new KMeans(IRIS_DATA_PATH, 4);
+            km.cluster();
+        } catch (IOException ex) {
+            System.err.println("File not found");
+        }
+        
     }
     
 }
