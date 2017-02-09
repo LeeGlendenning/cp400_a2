@@ -17,11 +17,43 @@ public class Cluster {
         this.points.add(point);
     }
     
-    public void updateClusterCenter(ArrayList<Double> newCenter) {
+    private void updateClusterCenter(ArrayList<Double> newCenter) {
         this.clusterCenter = newCenter;
     }
     
     public void clearPoints() {
         this.points = new ArrayList();
+    }
+    
+    /**
+     * average of points in cluster
+     */
+    public void computeNewClusterCenter() {
+        if (points.isEmpty()){
+            return;
+        }
+        
+        ArrayList<Double> newCenter = this.points.get(0);
+        
+        // Sum all indexes of points and store in newCenter arrayList
+        for (int i = 0; i < points.size(); i ++) {
+            ArrayList<Double> point = points.get(i);
+            
+            for (int j = 0; j < point.size(); j ++) {
+                // Add index values to newCenter
+                newCenter.set(j, newCenter.get(j) + point.get(j));
+            }
+        }
+        
+        
+        // Divide each index by total number of points, effectively finding average
+        System.out.println("New cluster center: ");
+        for (int i = 0; i < newCenter.size(); i ++) {
+            System.out.print(i + ": " + newCenter.get(i) + " / " + this.points.size());
+            newCenter.set(i, newCenter.get(i) / this.points.size());
+            System.out.println(" = " + newCenter.get(i));
+        }
+        
+        this.clusterCenter = newCenter;
     }
 }

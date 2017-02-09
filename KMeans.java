@@ -24,14 +24,16 @@ public class KMeans {
         
         this.clusters = new ArrayList();
         
-        printDataSet();
+        //printDataSet();
     }
     
     public void cluster() {
-        // create initial clusters
+        // create initial clusters with first k points in dataSet
         for (int i = 0; i < numClusters; i ++) {
             this.clusters.add(new Cluster(this.dataSet.get(i)));
         }
+        
+        
         
     }
     
