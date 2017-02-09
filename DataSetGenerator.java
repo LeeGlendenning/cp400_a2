@@ -12,6 +12,8 @@ import java.util.stream.Stream;
 
 public class DataSetGenerator {
     
+    public static Double SMALLEST_DATA_VALUE = null;
+    
     /*private final File dataFile;
     
     public FileReader(File dataFile) {
@@ -25,8 +27,14 @@ public class DataSetGenerator {
         
         String line;
         while ((line = br.readLine()) != null) {
-            
             dataSet.add(new ArrayList(Arrays.asList(stringArrayToDouble(line.split(",")))));
+            
+            for (Double val : dataSet.get(dataSet.size() - 1)) {
+                if (SMALLEST_DATA_VALUE == null || val < SMALLEST_DATA_VALUE) {
+                    SMALLEST_DATA_VALUE = val;
+                }
+            }
+            
         }
         
         return dataSet;

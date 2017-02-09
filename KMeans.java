@@ -34,8 +34,14 @@ public class KMeans {
             this.clusters.add(new Cluster(this.dataSet.get(i)));
         }
         
-        while (!done) {
-            
+        
+        double largestEuclideanDistance; // number of points that have changed clusters
+        int iterations = 0;
+        
+        // Stop when all clusters only move a small amount (euclidean distance less than value of smallest data point)
+        do {
+            largestEuclideanDistance = 0;
+            iterations ++;
             // Clear points in each cluster
             for (Cluster cluster : this.clusters) {
                 cluster.clearPoints();
@@ -57,6 +63,10 @@ public class KMeans {
                     
                     euclideanDist = Math.sqrt(euclideanDist);
                     
+                    if (euclideanDist > largestEuclideanDistance) {
+                        largestEuclideanDistance = euclideanDist;
+                    }
+                    
                     // if appropriate, set minEuclideanDist as the euclidean distance to current cluster
                     if (minEuclideanDist == null || euclideanDist < minEuclideanDist) {
                         minEuclideanDist = euclideanDist;
@@ -73,7 +83,7 @@ public class KMeans {
             for (Cluster cluster : this.clusters) {
                 cluster.computeNewClusterCenter();
             }
-        }
+        } while (largestEuclideanDistance > DataSetGenerator.SMALLEST_DATA_VALUE || iterations > 100);
     }
     
     private void printDataSet() {
