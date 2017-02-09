@@ -5,19 +5,19 @@ import java.util.ArrayList;
 
 public class Cluster {
     
-    private ArrayList<Integer> clusterCenter;
-    private ArrayList<ArrayList<Integer>> points;
+    private ArrayList<Double> clusterCenter;
+    private ArrayList<ArrayList<Double>> points;
     
-    public Cluster(ArrayList<Integer> clusterCenter) {
+    public Cluster(ArrayList<Double> clusterCenter) {
         this.clusterCenter = clusterCenter;
         points = new ArrayList();
     }
     
-    public void addPoint(ArrayList<Integer> point) {
+    public void addPoint(ArrayList<Double> point) {
         this.points.add(point);
     }
     
-    public void updateClusterCenter(ArrayList<Integer> newCenter) {
+    public void updateClusterCenter(ArrayList<Double> newCenter) {
         this.clusterCenter = newCenter;
     }
     

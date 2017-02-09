@@ -18,16 +18,21 @@ public class DataSetGenerator {
         this.dataFile = dataFile;
     }*/
     
-    public static ArrayList<ArrayList<String>> genDataSet(File dataFile) throws FileNotFoundException, IOException {
-        ArrayList<ArrayList<String>> dataSet = new ArrayList();
+    public static ArrayList<ArrayList<Double>> genDataSet(File dataFile) throws FileNotFoundException, IOException {
+        ArrayList<ArrayList<Double>> dataSet = new ArrayList();
         
         BufferedReader br = new BufferedReader(new FileReader(dataFile));
         
         String line;
         while ((line = br.readLine()) != null) {
-            dataSet.add(new ArrayList(Arrays.asList(line.split(","))));
+            
+            dataSet.add(new ArrayList(Arrays.asList(stringArrayToDouble(line.split(",")))));
         }
         
         return dataSet;
+    }
+    
+    private static Double[] stringArrayToDouble(String[] arr) {
+        return Arrays.stream( Stream.of(arr).mapToDouble(Double::parseDouble).toArray() ).boxed().toArray( Double[]::new );
     }
 }
