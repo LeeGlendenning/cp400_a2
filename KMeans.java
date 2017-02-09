@@ -16,7 +16,7 @@ public class KMeans {
     public KMeans(String dataFilePath, int numClusters) throws IOException {
         this.dataFile = new File(dataFilePath);
         this.numClusters = numClusters;
-        this.dataSet = DataSetGenerator.genDataSet(dataFile);
+        this.dataSet = DataSetGenerator.genDataSet(dataFile, ",");
         
         if (this.dataSet.size() < numClusters) {
             System.out.println("Not enough data points to create the specified number of clusters");

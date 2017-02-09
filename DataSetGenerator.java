@@ -20,14 +20,14 @@ public class DataSetGenerator {
         this.dataFile = dataFile;
     }*/
     
-    public static ArrayList<ArrayList<Double>> genDataSet(File dataFile) throws FileNotFoundException, IOException {
+    public static ArrayList<ArrayList<Double>> genDataSet(File dataFile, String delimiter) throws FileNotFoundException, IOException {
         ArrayList<ArrayList<Double>> dataSet = new ArrayList();
         
         BufferedReader br = new BufferedReader(new FileReader(dataFile));
         
         String line;
         while ((line = br.readLine()) != null) {
-            dataSet.add(new ArrayList(Arrays.asList(stringArrayToDouble(line.split(",")))));
+            dataSet.add(new ArrayList(Arrays.asList(stringArrayToDouble(line.split(delimiter)))));
             
             for (Double val : dataSet.get(dataSet.size() - 1)) {
                 if (SMALLEST_DATA_VALUE == null || val < SMALLEST_DATA_VALUE) {
