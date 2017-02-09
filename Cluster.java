@@ -35,11 +35,15 @@ public class Cluster {
     
     /**
      * average of points in cluster
+     * 
+     * @return boolean whether center changed
      */
-    public void computeNewClusterCenter() {
+    public boolean computeNewClusterCenter() {
         if (this.points.isEmpty()){
-            return;
+            return false;
         }
+        
+        boolean centerChanged = false;
         
         // Wrap points as new arraylist to avoid changing by address
         ArrayList<Double> newCenter = new ArrayList(this.points.get(0));
@@ -56,14 +60,24 @@ public class Cluster {
         
         
         // Divide each index by total number of points, effectively finding average
-        System.out.println("New cluster center: ");
+        //System.out.println("New cluster center: ");
         for (int i = 0; i < newCenter.size(); i ++) {
-            System.out.print(i + ": " + newCenter.get(i) + " / " + this.points.size());
+            //System.out.print(i + ": " + newCenter.get(i) + " / " + this.points.size());
             newCenter.set(i, newCenter.get(i) / this.points.size());
-            System.out.println(" = " + newCenter.get(i));
+            if (!doublesEqual(newCenter.get(i), this.clusterCenter.get(i))) {
+                centerChanged = true;
+            }
+            //System.out.println(" = " + newCenter.get(i));
         }
         
         this.clusterCenter = newCenter;
+        
+        return centerChanged;
+    }
+    
+    private boolean doublesEqual(double value1, double value2){
+        double threshold = 0.0000000001;
+        return value1 >= value2-threshold && value1 <= value2+threshold;
     }
     
     public String printCenter() {

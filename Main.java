@@ -5,9 +5,9 @@ import java.io.IOException;
 
 public class Main {
     
-    //static String IRIS_DATA_PATH = "C:\\Users\\The Boss\\Desktop\\School\\CP400R\\iris.data.txt";
-    static String IRIS_DATA_PATH = "C:\\Users\\The Boss\\Desktop\\School\\CP400R\\test1.txt";
-    static int NUM_CLUSTERS = 2;
+    static String IRIS_DATA_PATH = "C:\\Users\\The Boss\\Desktop\\School\\CP400R\\iris.data.txt";
+    //static String IRIS_DATA_PATH = "C:\\Users\\The Boss\\Desktop\\School\\CP400R\\test1.txt";
+    static int NUM_CLUSTERS = 5;
     
     public static void main(String[] args) {
         
