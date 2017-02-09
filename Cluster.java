@@ -29,6 +29,10 @@ public class Cluster {
         this.points = new ArrayList();
     }
     
+    public ArrayList<ArrayList<Double>> getPoints() {
+        return this.points;
+    }
+    
     /**
      * average of points in cluster
      */
@@ -37,10 +41,11 @@ public class Cluster {
             return;
         }
         
-        ArrayList<Double> newCenter = this.points.get(0);
+        // Wrap points as new arraylist to avoid changing by address
+        ArrayList<Double> newCenter = new ArrayList(this.points.get(0));
         
         // Sum all indexes of points and store in newCenter arrayList
-        for (int i = 0; i < this.points.size(); i ++) {
+        for (int i = 1; i < this.points.size(); i ++) {
             ArrayList<Double> point = this.points.get(i);
             
             for (int j = 0; j < point.size(); j ++) {
@@ -59,5 +64,13 @@ public class Cluster {
         }
         
         this.clusterCenter = newCenter;
+    }
+    
+    public String printCenter() {
+        String center = "";
+        for (Double val : this.clusterCenter) {
+            center += val + ", ";
+        }
+        return center;
     }
 }
