@@ -9,7 +9,7 @@ public class KMeans {
     
     private final File dataFile;
     private final int numClusters;
-    private ArrayList<ArrayList<Double>> dataSet;
+    private final ArrayList<ArrayList<Double>> dataSet;
     private ArrayList<Cluster> clusters;
     
     public KMeans(String dataFilePath, int numClusters) throws IOException {
@@ -28,13 +28,52 @@ public class KMeans {
     }
     
     public void cluster() {
+        
         // create initial clusters with first k points in dataSet
         for (int i = 0; i < numClusters; i ++) {
             this.clusters.add(new Cluster(this.dataSet.get(i)));
         }
         
-        
-        
+        while (!done) {
+            
+            // Clear points in each cluster
+            for (Cluster cluster : this.clusters) {
+                cluster.clearPoints();
+            }
+
+            // Assign each point to the cluster that has the minimum euclidean distance to the point
+            for (ArrayList<Double> point : this.dataSet) {
+                Double minEuclideanDist = null;
+                Cluster clusterWithMinEuclideanDist = null;
+                
+                // Calculate euclidean distance from point to every cluster center and take min
+                for (Cluster cluster : this.clusters) {
+                    double euclideanDist = 0;
+                    // iterate through each index in the cluster center
+                    for (int i = 0; i < cluster.getClusterCenter().size(); i ++) {
+                        // Add (pi - ci)^2 to euclidean distance
+                        euclideanDist += Math.pow(point.get(i) - cluster.getClusterCenter().get(i), 2);
+                    }
+                    
+                    euclideanDist = Math.sqrt(euclideanDist);
+                    
+                    // if appropriate, set minEuclideanDist as the euclidean distance to current cluster
+                    if (minEuclideanDist == null || euclideanDist < minEuclideanDist) {
+                        minEuclideanDist = euclideanDist;
+                        clusterWithMinEuclideanDist = cluster;
+                    }
+                    
+                }
+                
+                // Add current point to cluster having minEuclideanDist
+                clusterWithMinEuclideanDist.addPoint(point);
+            }
+            
+            // Adjust cluster centers
+            for (Cluster cluster : this.clusters) {
+                cluster.computeNewClusterCenter();
+            }
+        }
     }
     
     private void printDataSet() {
