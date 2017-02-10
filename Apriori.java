@@ -16,7 +16,7 @@ public class Apriori {
         this.dataFile = new File(dataFilePath);
         this.dataSet = DataSetGenerator.genDataSetString(this.dataFile, ", ");
         
-        DataSetGenerator.printDataSetString(this.dataSet);
+        //DataSetGenerator.printDataSetString(this.dataSet);
     }
     
     public void associationMine() {
@@ -26,8 +26,10 @@ public class Apriori {
         int iterations = 0;
         
         while (!candidateSet.isEmpty() && iterations < MAX_ITERATIONS) {
+            
             iterations ++;
             System.out.println("Iteration " + iterations);
+            System.out.println(candidateSet.size());
             
             // Compute support for each item = count(i)/m
             ArrayList<Double> support = calculateSupport(candidateSet);
@@ -37,12 +39,15 @@ public class Apriori {
             
             // Remove all sets from candidateSet having support less than the min support MIN_S
             trimCandidateSetByMinS(candidateSet, support);
-            
-            largeItemSet = new ArrayList(candidateSet);
+            System.out.println(candidateSet.size());
+            if (!candidateSet.isEmpty()) {
+                largeItemSet = new ArrayList(candidateSet);
+            }
             
             // New sets are size n+1 and are all combinations of old set (size n)
             candidateSet = constructNextCandidateSet(candidateSet, support, untrimmedCandidateSet, untrimmedSupport);
-            System.out.println("\nCandidate set: " + Arrays.toString(candidateSet.toArray()));
+            //System.out.println("\nCandidate set: " + Arrays.toString(candidateSet.toArray()));
+            System.out.println(candidateSet.size() + "\n");
         }
         
         System.out.println("\nFinal large item sets: " + Arrays.toString(largeItemSet.toArray()));
@@ -188,7 +193,7 @@ public class Apriori {
             support.add(new Double(globalOccurrences) / new Double(this.dataSet.size()));
         }
         
-        System.out.println(Arrays.toString(support.toArray()));
+        //System.out.println(Arrays.toString(support.toArray()));
         return support;
     }
     
@@ -217,7 +222,7 @@ public class Apriori {
             c.get(c.size() - 1).add(item);
         }
         
-        System.out.println(Arrays.toString(c.toArray()));
+        //System.out.println(Arrays.toString(c.toArray()));
         
         return c;
     }
