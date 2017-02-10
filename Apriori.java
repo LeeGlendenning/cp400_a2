@@ -10,7 +10,7 @@ public class Apriori {
     private final File dataFile;
     private final ArrayList<ArrayList<String>> dataSet;
     private static final int MAX_ITERATIONS = 10;
-    private static final double MIN_S = 0.5;
+    private static final double MIN_S = 0.1;
     
     public Apriori(String dataFilePath) throws IOException {
         this.dataFile = new File(dataFilePath);
@@ -29,7 +29,6 @@ public class Apriori {
             
             iterations ++;
             System.out.println("Iteration " + iterations);
-            System.out.println(candidateSet.size());
             
             // Compute support for each item = count(i)/m
             ArrayList<Double> support = calculateSupport(candidateSet);
@@ -39,7 +38,6 @@ public class Apriori {
             
             // Remove all sets from candidateSet having support less than the min support MIN_S
             trimCandidateSetByMinS(candidateSet, support);
-            System.out.println(candidateSet.size());
             if (!candidateSet.isEmpty()) {
                 largeItemSet = new ArrayList(candidateSet);
             }
@@ -47,10 +45,24 @@ public class Apriori {
             // New sets are size n+1 and are all combinations of old set (size n)
             candidateSet = constructNextCandidateSet(candidateSet, support, untrimmedCandidateSet, untrimmedSupport);
             //System.out.println("\nCandidate set: " + Arrays.toString(candidateSet.toArray()));
-            System.out.println(candidateSet.size() + "\n");
         }
         
-        System.out.println("\nFinal large item sets: " + Arrays.toString(largeItemSet.toArray()));
+        System.out.println("\nFinal large item sets:");
+        printLargeItemSet(largeItemSet);
+    }
+    
+    private void printLargeItemSet(ArrayList<ArrayList<String>> largeItemSet) {
+        for (int i = 0; i < largeItemSet.size(); i ++) {
+            System.out.print("L" + (i + 1) + ": {");
+            
+            for (int j = 0; j < largeItemSet.get(i).size(); j ++) {
+                System.out.print(largeItemSet.get(i).get(j));
+                if (j < largeItemSet.get(i).size() - 1) {
+                    System.out.print(", ");
+                }
+            }
+            System.out.println("}");
+        }
     }
     
     private  ArrayList<ArrayList<String>> constructNextCandidateSet( ArrayList<ArrayList<String>> candidateSet, ArrayList<Double> support, ArrayList<ArrayList<String>> untrimmedCandidateSet, ArrayList<Double> untrimmedSupport) {
