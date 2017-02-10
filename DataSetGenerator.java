@@ -12,15 +12,24 @@ import java.util.stream.Stream;
 
 public class DataSetGenerator {
     
-    public static Double SMALLEST_DATA_VALUE = null;
+    //public static Double SMALLEST_DATA_VALUE = null;
     
-    /*private final File dataFile;
+    public static ArrayList<ArrayList<String>> genDataSetString(File dataFile, String delimiter) throws FileNotFoundException, IOException {
+        ArrayList<ArrayList<String>> dataSet = new ArrayList();
+        
+        BufferedReader br = new BufferedReader(new FileReader(dataFile));
+        
+        String line;
+        while ((line = br.readLine()) != null) {
+            dataSet.add(new ArrayList(Arrays.asList(line.split(delimiter))));
+            
+            
+        }
+        
+        return dataSet;
+    }
     
-    public FileReader(File dataFile) {
-        this.dataFile = dataFile;
-    }*/
-    
-    public static ArrayList<ArrayList<Double>> genDataSet(File dataFile, String delimiter) throws FileNotFoundException, IOException {
+    public static ArrayList<ArrayList<Double>> genDataSetDouble(File dataFile, String delimiter) throws FileNotFoundException, IOException {
         ArrayList<ArrayList<Double>> dataSet = new ArrayList();
         
         BufferedReader br = new BufferedReader(new FileReader(dataFile));
@@ -29,11 +38,11 @@ public class DataSetGenerator {
         while ((line = br.readLine()) != null) {
             dataSet.add(new ArrayList(Arrays.asList(stringArrayToDouble(line.split(delimiter)))));
             
-            for (Double val : dataSet.get(dataSet.size() - 1)) {
+            /*for (Double val : dataSet.get(dataSet.size() - 1)) {
                 if (SMALLEST_DATA_VALUE == null || val < SMALLEST_DATA_VALUE) {
                     SMALLEST_DATA_VALUE = val;
                 }
-            }
+            }*/
             
         }
         
@@ -42,5 +51,25 @@ public class DataSetGenerator {
     
     private static Double[] stringArrayToDouble(String[] arr) {
         return Arrays.stream( Stream.of(arr).mapToDouble(Double::parseDouble).toArray() ).boxed().toArray( Double[]::new );
+    }
+    
+    public static void printDataSetDouble(ArrayList<ArrayList<Double>> dataSet) {
+        for (ArrayList<Double> row : dataSet) {
+            for (Double i : row) {
+                System.out.print(i + ",");
+            }
+            System.out.println();
+        }
+        System.out.println("\n");
+    }
+    
+    public static void printDataSetString(ArrayList<ArrayList<String>> dataSet) {
+        for (ArrayList<String> row : dataSet) {
+            for (String i : row) {
+                System.out.print(i + ",");
+            }
+            System.out.println();
+        }
+        System.out.println("\n");
     }
 }

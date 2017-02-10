@@ -8,11 +8,12 @@ public class Main {
     static int numClusters = 5;
     static String kmeansDataSetPath = "C:\\Users\\The Boss\\Desktop\\School\\CP400R\\iris.data.txt";
     
-    static String aprioriDataSetPath = "C:\\Users\\The Boss\\Desktop\\School\\CP400R\\aprioti_test_data\\cti.tra";
+    //static String aprioriDataSetPath = "C:\\Users\\The Boss\\Desktop\\School\\CP400R\\aprioti_test_data\\cti.tra";
+    static String aprioriDataSetPath = "C:\\Users\\The Boss\\Desktop\\School\\CP400R\\apriori_test1.txt";
     
     public static void main(String[] args) {
         
-        doKMeans(args);
+        //doKMeans(args);
         
         doApriori();
         

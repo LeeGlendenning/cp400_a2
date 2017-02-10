@@ -16,7 +16,7 @@ public class KMeans {
     public KMeans(String dataFilePath, int numClusters) throws IOException {
         this.dataFile = new File(dataFilePath);
         this.numClusters = numClusters;
-        this.dataSet = DataSetGenerator.genDataSet(dataFile, ",");
+        this.dataSet = DataSetGenerator.genDataSetDouble(dataFile, ",");
         
         if (this.dataSet.size() < numClusters) {
             System.out.println("Not enough data points to create the specified number of clusters");
@@ -135,16 +135,6 @@ public class KMeans {
             System.out.println("Cluster center: " + cluster.printCenter());
             System.out.println("Cluster SSE: " + sseTotal + "\n");
         }
-    }
-    
-    private void printDataSet() {
-        for (ArrayList<Double> row : this.dataSet) {
-            for (Double i : row) {
-                System.out.print(i + ",");
-            }
-            System.out.println();
-        }
-        System.out.println("\n");
     }
     
 }
