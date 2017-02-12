@@ -5,9 +5,10 @@ import java.io.IOException;
 
 public class Main {
     
-    static int numClusters = 5;
+    static int numClusters = 2;
     //static String kmeansDataSetPath = "C:\\Users\\The Boss\\Desktop\\School\\CP400R\\iris.data.txt";
-    static String kmeansDataSetPath = "/Users/theboss/Desktop/School/CP400/A2/iris.data.txt";
+    static String kmeansDataSetPath = "/Users/theboss/Desktop/School/CP400/A2/km.400000.txt";
+    //static String kmeansDataSetPath = "/Users/theboss/Desktop/School/CP400/A2/iris.data.txt";
     
     //static String aprioriDataSetPath = "C:\\Users\\The Boss\\Desktop\\School\\CP400R\\aprioti_test_data\\cti.tra";
     static String aprioriDataSetPath = "/Users/theboss/Desktop/School/CP400/A2/flare.data1";
@@ -21,7 +22,7 @@ public class Main {
     }
     
     private static void doKMeans(String[] args) {
-        switch(args.length) {
+        /*switch(args.length) {
             case 0:
             case 1:
                 System.out.println("Usage: CP400_A2 <path-to-data-set> <k-number-of-clusters>");
@@ -35,7 +36,7 @@ public class Main {
                     System.out.println("Argument 2 must be an integer");
                     return;
                 }
-        }
+        }*/
         
         KMeans km;
         try {

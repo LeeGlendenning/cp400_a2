@@ -3,6 +3,14 @@ package cp400_a2;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 
 public class KMeans {
@@ -113,7 +121,49 @@ public class KMeans {
         } while (clusterCenterChange && iterations < MAX_ITERATIONS);
         
         outputQualityMeasure();
+        
+        createAndShowChart2D();
     }
+    
+    private void createAndShowChart2D() {
+        if (!this.clusters.isEmpty() && !this.clusters.get(0).getPoints().isEmpty() && this.clusters.get(0).getPoints().get(0).size() != 2) {
+            return;
+        }
+        
+        System.out.println("Data is 2D - Creating scatter plot...");
+        
+        // create a chart...
+        JFreeChart chart = ChartFactory.createScatterPlot(
+            "Scatter Plot", // chart title
+            "X", // x axis label
+            "Y", // y axis label
+            createDataset(), // data
+            PlotOrientation.VERTICAL,
+            true, // include legend
+            true, // tooltips
+            false // urls
+            );
+
+        // create and display a frame...
+        ChartFrame frame = new ChartFrame("First", chart);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    private XYDataset createDataset() {
+        XYSeriesCollection allClusters = new XYSeriesCollection();
+        
+        for (int i = 0; i < this.clusters.size(); i ++) {
+            XYSeries series = new XYSeries("Cluster " + i);
+            for (ArrayList<Double> point : this.clusters.get(i).getPoints()) {
+                series.add(point.get(0), point.get(1));
+            }
+            allClusters.addSeries(series);
+        }
+        
+        return allClusters;
+    }
+    
     
     /**
      * Calculate SSE for each cluster and output cluster centers
