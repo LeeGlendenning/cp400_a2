@@ -10,11 +10,11 @@ public class Apriori {
     private final File dataFile;
     private final ArrayList<ArrayList<String>> dataSet;
     private static final int MAX_ITERATIONS = 10;
-    private static final double MIN_S = 0.1;
+    private static final double MIN_S = 0.9;
     
     public Apriori(String dataFilePath) throws IOException {
         this.dataFile = new File(dataFilePath);
-        this.dataSet = DataSetGenerator.genDataSetString(this.dataFile, ", ");
+        this.dataSet = DataSetGenerator.genDataSetString(this.dataFile, " ");
         
         //DataSetGenerator.printDataSetString(this.dataSet);
     }
@@ -22,7 +22,7 @@ public class Apriori {
     public void associationMine() {
         
         ArrayList<ArrayList<String>> candidateSet = findInitialCandidateSet();
-        ArrayList<ArrayList<String>> largeItemSet = new ArrayList();
+        ArrayList<ArrayList<ArrayList<String>>> largeItemSets = new ArrayList();
         int iterations = 0;
         
         while (!candidateSet.isEmpty() && iterations < MAX_ITERATIONS) {
@@ -39,7 +39,7 @@ public class Apriori {
             // Remove all sets from candidateSet having support less than the min support MIN_S
             trimCandidateSetByMinS(candidateSet, support);
             if (!candidateSet.isEmpty()) {
-                largeItemSet = new ArrayList(candidateSet);
+                largeItemSets.add(new ArrayList(candidateSet));
             }
             
             // New sets are size n+1 and are all combinations of old set (size n)
@@ -48,16 +48,25 @@ public class Apriori {
         }
         
         System.out.println("\nFinal large item sets:");
-        printLargeItemSet(largeItemSet);
+        printLargeItemSets(largeItemSets);
     }
     
-    private void printLargeItemSet(ArrayList<ArrayList<String>> largeItemSet) {
-        for (int i = 0; i < largeItemSet.size(); i ++) {
+    private void printLargeItemSets(ArrayList<ArrayList<ArrayList<String>>> largeItemSets) {
+        for (int i = 0; i < largeItemSets.size(); i ++) {
             System.out.print("L" + (i + 1) + ": {");
             
-            for (int j = 0; j < largeItemSet.get(i).size(); j ++) {
-                System.out.print(largeItemSet.get(i).get(j));
-                if (j < largeItemSet.get(i).size() - 1) {
+            // Each L
+            for (int j = 0; j < largeItemSets.get(i).size(); j ++) {
+                System.out.print("{");
+                // Each set in L
+                for (int k = 0; k < largeItemSets.get(i).get(j).size(); k ++) {
+                    System.out.print(largeItemSets.get(i).get(j).get(k));
+                    if (k < largeItemSets.get(i).get(j).size() - 1) {
+                        System.out.print(", ");
+                    }
+                }
+                System.out.print("}");
+                if (j < largeItemSets.get(i).size() - 1) {
                     System.out.print(", ");
                 }
             }
@@ -114,7 +123,7 @@ public class Apriori {
             //System.out.println("j = " + j + ". Support[" + i + "] = " + support.get(i));
             // curCandidate has the candidate as a subset but its support is invalid => curCandidate is invalid
             if (j == candidateSet.get(i).size() && support.get(i) < MIN_S) {
-                //System.out.println("j = " + j + ". Support[" + i + "] = " + support.get(i));
+                //System.out.println("j = " + j + ". Support[" + i + "] = " + support.get(i) + ". invalid?");
                 return false;
             }
         }
@@ -205,7 +214,7 @@ public class Apriori {
             support.add(new Double(globalOccurrences) / new Double(this.dataSet.size()));
         }
         
-        //System.out.println(Arrays.toString(support.toArray()));
+        System.out.println(Arrays.toString(support.toArray()));
         return support;
     }
     
