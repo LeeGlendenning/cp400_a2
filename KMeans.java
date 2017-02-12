@@ -11,7 +11,7 @@ public class KMeans {
     private final int numClusters;
     private final ArrayList<ArrayList<Double>> dataSet;
     private ArrayList<Cluster> clusters;
-    private static final int MAX_ITERATIONS = 1000;
+    private static final int MAX_ITERATIONS = 100;
     
     public KMeans(String dataFilePath, int numClusters) throws IOException {
         this.dataFile = new File(dataFilePath);
@@ -50,7 +50,7 @@ public class KMeans {
             clusterCenterChange = false;
             largestEuclideanDistance = 0;
             iterations ++;
-            //System.out.println("\nIteration " + iterations + ":");
+            System.out.println("\nIteration " + iterations + ":");
             // Clear points in each cluster
             for (Cluster cluster : this.clusters) {
                 cluster.clearPoints();
