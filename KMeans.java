@@ -1,11 +1,14 @@
 package cp400_a2;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYDataset;
@@ -53,9 +56,10 @@ public class KMeans {
             
             //50 is the maximum and the 1 is our minimum 
             this.clusters.add(new Cluster(new ArrayList(this.dataSet.get(clusterIndex))));
-            //System.out.println("Creating new cluster center at " + this.clusters.get(clusters.size() - 1).printCenter());
+            System.out.println("Creating initial cluster " + (i+1) + " center at " + this.clusters.get(clusters.size() - 1).printCenter());
         }
         
+        System.out.println();
         
         double largestEuclideanDistance; // number of points that have changed clusters
         int iterations = 0;
@@ -70,7 +74,7 @@ public class KMeans {
             clusterCenterChange = false;
             largestEuclideanDistance = 0;
             iterations ++;
-            System.out.println("\nIteration " + iterations + ":");
+            System.out.println("Iteration " + iterations + "...");
             // Clear points in each cluster
             for (Cluster cluster : this.clusters) {
                 cluster.clearPoints();
@@ -132,6 +136,11 @@ public class KMeans {
             
         } while (clusterCenterChange && iterations < MAX_ITERATIONS);
         
+        if (iterations == MAX_ITERATIONS) {
+        	System.out.println("Hit max iterations: " + MAX_ITERATIONS);
+        }
+        
+        System.out.println();
         outputQualityMeasure();
         
         createAndShowChart2D();
@@ -142,24 +151,35 @@ public class KMeans {
             return;
         }
         
-        System.out.println("Data is 2D - Creating scatter plot...");
+        System.out.println("Data is 2D - Creating scatter plot clusters.png in jar directory...");
+        
+        JFreeChart chart = ChartFactory.createScatterPlot(
+                this.dataFile.getName(), // chart title
+                "X", // x axis label
+                "Y", // y axis label
+                createDataset(), // data
+                PlotOrientation.VERTICAL,
+                true, // include legend
+                true, // tooltips
+                false // urls
+                );
+        
+        // Write chart as png image called clusters.png
+        try {
+			ChartUtilities.writeChartAsPNG(new FileOutputStream("clusters.png"), chart, 500,500);
+		} catch (IOException e) {
+			System.out.println("File not found exception when creating image of clusters");
+			System.exit(1);
+		}
+        
         
         // create a chart...
-        JFreeChart chart = ChartFactory.createScatterPlot(
-            this.dataFile.getName(), // chart title
-            "X", // x axis label
-            "Y", // y axis label
-            createDataset(), // data
-            PlotOrientation.VERTICAL,
-            true, // include legend
-            true, // tooltips
-            false // urls
-            );
+        
 
         // create and display a frame...
-        ChartFrame frame = new ChartFrame("KMeans Clustering", chart);
+        /*ChartFrame frame = new ChartFrame("KMeans Clustering", chart);
         frame.pack();
-        frame.setVisible(true);
+        frame.setVisible(true);*/
     }
 
     private XYDataset createDataset() {
@@ -183,6 +203,7 @@ public class KMeans {
      */
     private void outputQualityMeasure() {
         
+    	int cNum = 1;
         for (Cluster cluster : this.clusters) {
             double sseTotal = 0; // Sum of Squared Error quality measure
             
@@ -194,8 +215,9 @@ public class KMeans {
                 }
                 sseTotal += ssePoint;
             }
-            System.out.println("Cluster center: " + cluster.printCenter());
+            System.out.println("Cluster center " + cNum + ": " + cluster.printCenter());
             System.out.println("Cluster SSE: " + sseTotal + "\n");
+            cNum ++;
         }
     }
     
