@@ -146,7 +146,7 @@ public class KMeans {
         
         // create a chart...
         JFreeChart chart = ChartFactory.createScatterPlot(
-            "Scatter Plot", // chart title
+            this.dataFile.getName(), // chart title
             "X", // x axis label
             "Y", // y axis label
             createDataset(), // data
@@ -157,7 +157,7 @@ public class KMeans {
             );
 
         // create and display a frame...
-        ChartFrame frame = new ChartFrame("First", chart);
+        ChartFrame frame = new ChartFrame("KMeans Clustering", chart);
         frame.pack();
         frame.setVisible(true);
     }
