@@ -39,8 +39,20 @@ public class KMeans {
     public void cluster() {
         //System.out.println("Starting clustering...");
         // create initial clusters with first k points in dataSet
+        ArrayList<Integer> randIndexes = new ArrayList();
+        Random random = new Random();
         for (int i = 0; i < numClusters; i ++) {
-            this.clusters.add(new Cluster(new ArrayList(this.dataSet.get(i))));
+            int clusterIndex;
+            
+            do {
+                // Generate random point to be cluster center
+                clusterIndex = random.nextInt(this.dataSet.size()) + 1;
+            }
+            while (randIndexes.contains(clusterIndex));
+
+            
+            //50 is the maximum and the 1 is our minimum 
+            this.clusters.add(new Cluster(new ArrayList(this.dataSet.get(clusterIndex))));
             //System.out.println("Creating new cluster center at " + this.clusters.get(clusters.size() - 1).printCenter());
         }
         
