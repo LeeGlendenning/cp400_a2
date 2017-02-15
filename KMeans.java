@@ -166,11 +166,11 @@ public class KMeans {
         
         // Write chart as png image called clusters.png
         try {
-			ChartUtilities.writeChartAsPNG(new FileOutputStream("clusters.png"), chart, 500,500);
-		} catch (IOException e) {
-			System.out.println("File not found exception when creating image of clusters");
-			System.exit(1);
-		}
+                ChartUtilities.writeChartAsPNG(new FileOutputStream("clusters.png"), chart, 500,500);
+        } catch (IOException e) {
+                System.out.println("File not found exception when creating image of clusters");
+                System.exit(1);
+        }
         
         
         // create a chart...
